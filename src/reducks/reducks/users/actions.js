@@ -1,3 +1,4 @@
+// どういう値を渡すかをすべてここにかく
 export const SIGN_IN = "SIGN_IN";
 export const signInAction = (userState) => {
   // reducerに渡す値
@@ -6,7 +7,7 @@ export const signInAction = (userState) => {
     payload: {
       isSignedIn: true,
       uid: userState.uid,
-      userName: userState.username,
+      username: userState.username,
     },
   };
 };

@@ -1,15 +1,14 @@
 import React from "react";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
-import { Login, Home } from "./templates";
+import { Switch, Route } from "react-router";
+import { Login, Home, SignUp } from "./templates";
 
 const Router = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <Switch>
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/signup" component={SignUp} />
+      <Route exact path="/" component={Home} />
+    </Switch>
   );
 };
 

@@ -1,13 +1,16 @@
 import {
-  legacy_createStore as reduxCreateStore,
+  createStore as reduxCreateStore,
   combineReducers,
   applyMiddleware,
 } from "redux";
+// import { configureStore as reduxCreateStore } from "@reduxjs/toolkit";
 // 現在どのパスにいるかを管理するモジュール
 import { connectRouter, routerMiddleware } from "connected-react-router";
 
 // import { ProductsReducer } from "../products/reducers";
 import { UsersReducer } from "../users/reducers";
+
+import thunk from "redux-thunk";
 
 // 渡したい初期値
 export default function createStore(history) {
@@ -18,6 +21,6 @@ export default function createStore(history) {
       users: UsersReducer,
     }),
     // routerをミドルウェアとして使う
-    applyMiddleware(routerMiddleware(history))
+    applyMiddleware(routerMiddleware(history), thunk)
   );
 }
