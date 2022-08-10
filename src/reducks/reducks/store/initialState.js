@@ -3,7 +3,7 @@
 
 const initialState = {
   products: {
-    // initialStateの中にstateを書いていく
+    list: [],
   },
 
   users: {
