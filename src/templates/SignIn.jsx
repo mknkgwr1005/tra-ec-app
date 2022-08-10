@@ -31,9 +31,9 @@ const SignIn = () => {
           label={"メールアドレス"}
           multiline={false}
           required={true}
-          rows={1}
+          minRows={1}
           value={email}
-          type={"text"}
+          type={"email"}
           onChange={inputEmail}
         />
         <TextInput
@@ -41,9 +41,9 @@ const SignIn = () => {
           label={"パスワード"}
           multiline={false}
           required={true}
-          rows={1}
+          minRows={1}
           value={password}
-          type={"text"}
+          type={"password"}
           onChange={inputPassword}
         />
         <div className="module-spacer--medium"></div>

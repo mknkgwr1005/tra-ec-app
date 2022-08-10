@@ -45,7 +45,7 @@ const SignUp = () => {
           label={"ユーザー名"}
           multiline={false}
           required={true}
-          rows={1}
+          minRows={1}
           value={username}
           type={"text"}
           onChange={inputUsername}
@@ -55,9 +55,9 @@ const SignUp = () => {
           label={"メールアドレス"}
           multiline={false}
           required={true}
-          rows={1}
+          minRows={1}
           value={email}
-          type={"text"}
+          type={"email"}
           onChange={inputEmail}
         />
         <TextInput
@@ -65,9 +65,9 @@ const SignUp = () => {
           label={"パスワード"}
           multiline={false}
           required={true}
-          rows={1}
+          minRows={1}
           value={password}
-          type={"text"}
+          type={"password"}
           onChange={inputPassword}
         />
         <TextInput
@@ -75,9 +75,9 @@ const SignUp = () => {
           label={"確認用パスワード"}
           multiline={false}
           required={true}
-          rows={1}
+          minRows={1}
           value={confirmPassword}
-          type={"text"}
+          type={"password"}
           onChange={inputConfirmPassword}
         />
         <div className="module-spacer--medium"></div>

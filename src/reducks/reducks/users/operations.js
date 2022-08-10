@@ -1,12 +1,51 @@
 // 非同期処理の制御。actionsを呼び出す
 import { push } from "connected-react-router";
-import { signInAction } from "./actions";
+import { signInAction, signOutAction } from "./actions";
 import { auth, db, FirebaseTimestamp } from "../../../firebase/index";
+
+export const listenAuthState = () => {
+  return async (dispatch) => {
+    return auth.onAuthStateChanged((user) => {
+      if (user) {
+        const uid = user.uid;
+
+        db.collection("users")
+          .doc(uid)
+          .get()
+          .then((snapshot) => {
+            const data = snapshot.data();
+
+            dispatch(
+              signInAction({
+                isSignedIn: true,
+                role: data.role,
+                uid: uid,
+                username: data.username,
+              })
+            );
+          });
+      } else {
+        dispatch(push("/signin"));
+      }
+    });
+  };
+};
+
+export const signOut = () => {
+  return async (dispatch) => {
+    // firebaseのサインアウトプロパティ
+    auth.signOut().then(() => {
+      // サインイン状態のstateのリセット
+      dispatch(signOutAction());
+      dispatch(push("/signin"));
+    });
+  };
+};
 
 export const signIn = (email, password) => {
   // 第一引数：actionを呼び出す、getState:storeの参照
   return async (dispatch) => {
-    if (password == "" || email == "") {
+    if (password === "" || email === "") {
       alert("必須項目が未入力です");
       return false;
     }
@@ -42,10 +81,10 @@ export const signIn = (email, password) => {
 export const signUp = (username, email, password, confirmPassword) => {
   return async (dispatch) => {
     if (
-      username == "" ||
-      password == "" ||
-      email == "" ||
-      confirmPassword == ""
+      username === "" ||
+      password === "" ||
+      email === "" ||
+      confirmPassword === ""
     ) {
       alert("必須項目が未入力です");
       return false;
