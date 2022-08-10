@@ -3,6 +3,27 @@ import { push } from "connected-react-router";
 import { signInAction, signOutAction } from "./actions";
 import { auth, db, FirebaseTimestamp } from "../../../firebase/index";
 
+export const resetPassword = (email) => {
+  return async (dispatch) => {
+    if (email === "") {
+      alert("必須項目が未入力です");
+      return false;
+    } else {
+      auth
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          alert(
+            "入力されたアドレスにパスワードリセット用のメールを送信しました"
+          );
+          dispatch(push("/signin"));
+        })
+        .catch(() => {
+          alert("パスワードリセットに失敗しました。通信状況を確認してください");
+        });
+    }
+  };
+};
+
 export const listenAuthState = () => {
   return async (dispatch) => {
     return auth.onAuthStateChanged((user) => {
