@@ -1,13 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import createStore from "./reducks/reducks/store/store";
+import { ConnectedRouter } from "connected-react-router";
+import * as History from "history";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// ブラウザの履歴を作成
+const history = History.createBrowserHistory();
+
+// storeの作成
+export const store = createStore(history);
+
+// App全体でStoreを参照できるようにする
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </Provider>
   </React.StrictMode>
 );
 
