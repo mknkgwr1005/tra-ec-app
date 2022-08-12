@@ -57,6 +57,7 @@ const ImageArea = (props) => {
         });
       });
     },
+    // 変化があったときのみ、propsからわたってきたsetImagesが再度呼び出される
     [props.setImages]
   );
 
