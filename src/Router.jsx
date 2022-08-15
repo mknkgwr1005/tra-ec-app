@@ -10,8 +10,9 @@ const Router = () => {
       <Route exact path="/signup" component={SignUp} />
       <Route exact path="/signin/reset" component={Reset} />
       <Auth>
-        <Route exact path="/" component={Home} />
+        <Route exact path="(/)?" component={Home} />
         <Route exact path="/product/edit/:id" component={ProductEdit} />
+        <Route exact path="/product/edit(/:id)?" component={ProductEdit} />
       </Auth>
     </Switch>
   );
