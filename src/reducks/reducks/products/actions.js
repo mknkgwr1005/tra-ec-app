@@ -5,3 +5,10 @@ export const fetchProductsAction = (products) => {
     payload: products,
   };
 };
+export const DELETE_PRODUCTS = "DELETE_PRODUCTS";
+export const deleteProductsAction = (products) => {
+  return {
+    type: "DELETE_PRODUCTS",
+    payload: products,
+  };
+};

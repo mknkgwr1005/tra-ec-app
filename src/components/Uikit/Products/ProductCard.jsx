@@ -7,6 +7,13 @@ import Typography from "@material-ui/core/Typography";
 import NoImage from "../../../assets/img/src/no_image.png";
 import { push } from "connected-react-router";
 import { useDispatch } from "react-redux";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuIcon from "@material-ui/core/MenuItem";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { useState } from "react";
+import { deleteProduct } from "../../../reducks/reducks/products/operations";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +48,17 @@ const useStyles = makeStyles((theme) => ({
 const ProductCard = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event) => {
+    setAnchorEl(null);
+  };
+
   const price = props.price.toLocaleString();
   const images = props.images.length > 0 ? props.images : [{ path: NoImage }];
 
@@ -50,15 +68,45 @@ const ProductCard = (props) => {
         className={classes.media}
         image={props.images[0].path}
         title=""
-        onClick={() => dispatch(push("product/" + props.id))}
+        onClick={() => dispatch(push("/product/" + props.id))}
       />
       <CardContent>
-        <div onClick={() => dispatch(push("product/" + props.id))}>
+        <div
+          onClick={() => {
+            dispatch(push("/product/" + props.id));
+          }}
+        >
           <Typography color="textSecondary" component="p">
             {props.name}
           </Typography>
           <Typography component="p">\{price}</Typography>
         </div>
+        <IconButton onClick={handleClick}>
+          <MoreVertIcon></MoreVertIcon>
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem
+            onClick={() => {
+              dispatch(push("/product/edit/" + props.id));
+              handleClose();
+            }}
+          >
+            編集する
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              dispatch(deleteProduct(props.id));
+              handleClose();
+            }}
+          >
+            削除する
+          </MenuItem>
+        </Menu>
       </CardContent>
     </Card>
   );

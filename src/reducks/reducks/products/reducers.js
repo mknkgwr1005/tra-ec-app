@@ -7,6 +7,11 @@ import initialState from "../store/initialState";
 export const ProductsReducer = (state = initialState.products, action) => {
   // actionのタイプによって処理をわけるswitch...case
   switch (action.type) {
+    case Actions.DELETE_PRODUCTS:
+      return {
+        ...state,
+        list: [...action.payload],
+      };
     case Actions.FETCH_PRODUCTS:
       return {
         ...state,
