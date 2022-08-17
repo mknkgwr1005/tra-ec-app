@@ -8,11 +8,9 @@ import { db } from "../firebase";
 const ProductEdit = () => {
   const dispatch = useDispatch();
   let id = window.location.pathname.split("/product/edit")[1];
-  console.log("before split/", id);
 
   if (id !== "") {
     id = id.split("/")[1];
-    console.log("after split/", id);
   }
 
   const [name, setName] = useState(""),
