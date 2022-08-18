@@ -1,42 +1,33 @@
-import React from "react";
-import {
-  makeStyles,
-  createStyles,
-  useDispatch,
-} from "@material-ui/core/styles";
+import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import logo from "../../../assets/img/icons/logo.png";
 import { useSelector } from "react-redux";
 import { getIsSignedIn } from "../../../reducks/reducks/users/selectors";
-import HeaderMenus from "../Header/index";
+import { HeaderMenus, ClosableDrawer } from "../Header/index";
+import { push } from "connected-react-router";
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-  menuBar: {
-    backgroundColor: "#fff",
-    color: "#444",
-  },
-  toolBar: {
-    marigin: "0 auto",
-    maxWidth: 1024,
-    width: "100%",
-  },
-  iconButtons: {
-    margin: "0 0 0 0",
-  },
-});
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    menuBar: {
+      backgroundColor: "#fff",
+      color: "#444",
+    },
+    toolbar: {
+      margin: "0 auto",
+      maxWidth: 1024,
+      width: "100%",
+    },
+    iconButtons: {
+      margin: "0 0 0 auto",
+    },
+  })
+);
 
 const Header = () => {
   const classes = useStyles();
@@ -44,22 +35,36 @@ const Header = () => {
   const isSignedIn = getIsSignedIn(selector);
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerToggle = useCallback(
+    (event) => {
+      if (
+        (event.type === "keydown" && event.key === "Tab") ||
+        event.key === "Shift"
+      ) {
+        return;
+      }
+      setOpen(!open);
+    },
+    [setOpen, open]
+  );
+
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.menuBar}>
-        <Toolbar className={classes.toolBar} />
-        <img
-          src={logo}
-          alt="torahackLogo"
-          width="128px"
-          onClick={() => dispatch(push("/"))}
-        />
-        {isSignedIn && (
-          <div className={classes.iconButtons}>
-            <HeaderMenus />
-          </div>
-        )}
+        <Toolbar className={classes.toolbar}>
+          <img src={logo} width="128px" onClick={() => dispatch(push("/"))} />
+          {isSignedIn && (
+            <div className={classes.iconButtons}>
+              <HeaderMenus
+                handleDrawerToggle={handleDrawerToggle}
+              ></HeaderMenus>
+            </div>
+          )}
+        </Toolbar>
       </AppBar>
+      <ClosableDrawer open={open} onClose={handleDrawerToggle} />
     </div>
   );
 };

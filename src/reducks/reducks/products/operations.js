@@ -21,6 +21,7 @@ export const deleteProduct = (id) => {
 
 export const fetchProducts = () => {
   return async (dispatch) => {
+    console.log("called");
     productsRef
       .orderBy("updated_at", "desc")
       .get()
