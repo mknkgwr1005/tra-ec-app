@@ -4,3 +4,4 @@ export { default as ImageSwiper } from "./imageSwiper";
 export { default as ProductCard } from "./ProductCard";
 export { default as SetSizesArea } from "./setSizeArea";
 export { default as SizeTable } from "./SizeTable";
+export { default as CartListItem } from "./CartListItem";
