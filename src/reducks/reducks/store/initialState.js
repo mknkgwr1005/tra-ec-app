@@ -7,6 +7,7 @@ const initialState = {
   },
 
   users: {
+    cart: [],
     icon: "",
     isSignedIn: false,
     role: "",

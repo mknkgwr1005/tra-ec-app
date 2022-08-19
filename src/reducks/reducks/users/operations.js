@@ -1,7 +1,31 @@
 // 非同期処理の制御。actionsを呼び出す
 import { push } from "connected-react-router";
-import { signInAction, signOutAction } from "./actions";
+import {
+  fetchProductsInCartAction,
+  signInAction,
+  signOutAction,
+} from "./actions";
 import { auth, db, FirebaseTimestamp } from "../../../firebase/index";
+
+export const addProductToCart = (addedProduct) => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const cartRef = db
+      .collection("users")
+      .doc(uid)
+      .collection("cart")
+      .doc();
+    addedProduct["cartId"] = cartRef.id;
+    await cartRef.set(addedProduct);
+    dispatch(push("/"));
+  };
+};
+
+export const fetchProductsInCart = (products) => {
+  return async (dispatch) => {
+    dispatch(fetchProductsInCartAction(products));
+  };
+};
 
 export const resetPassword = (email) => {
   return async (dispatch) => {

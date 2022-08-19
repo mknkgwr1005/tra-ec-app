@@ -26,15 +26,18 @@ const SizeTable = (props) => {
     <TableContainer>
       <Table>
         <TableBody>
-          {sizes.length > 0 &&
-            sizes.map((size) => (
-              <TableRow key={sizes.size}>
-                <TableCell component="th">
-                  {size.size} scope={"row"}
+          {props.sizes.length > 0 &&
+            props.sizes.map((item, index) => (
+              <TableRow key={item.size}>
+                <TableCell component="th" scope="row">
+                  {item.size}
                 </TableCell>
-                <TableCell>残り{size.quantity}点</TableCell>
-                {size.quantity > 0 ? (
-                  <IconButton>
+                <TableCell>残り{item.quantity}点</TableCell>
+                {item.quantity > 0 ? (
+                  <IconButton
+                    className={classes.iconCell}
+                    onClick={() => props.addProduct(item.size)}
+                  >
                     <ShoppingCartIcon />
                   </IconButton>
                 ) : (
