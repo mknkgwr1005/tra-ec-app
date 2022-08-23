@@ -5,3 +5,5 @@ export { default as ProductCard } from "./ProductCard";
 export { default as SetSizesArea } from "./setSizeArea";
 export { default as SizeTable } from "./SizeTable";
 export { default as CartListItem } from "./CartListItem";
+export { default as OrderHistoryItem } from "./OrderHistoryItem";
+export { default as OrderedProducts } from "./OrderedProducts";

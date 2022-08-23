@@ -69,7 +69,7 @@ export const orderProduct = (productsInCart, price) => {
           );
 
           const history = {
-            amount: amount,
+            amount: price,
             created_at: timestamp,
             id: orderRef.id,
             products: products,

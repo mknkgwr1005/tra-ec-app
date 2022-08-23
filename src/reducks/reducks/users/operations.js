@@ -1,11 +1,33 @@
 // 非同期処理の制御。actionsを呼び出す
 import { push } from "connected-react-router";
 import {
+  fetchOrderHistoryAction,
   fetchProductsInCartAction,
   signInAction,
   signOutAction,
 } from "./actions";
 import { auth, db, FirebaseTimestamp } from "../../../firebase/index";
+
+export const fetchOrderHistory = () => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const list = [];
+
+    db.collection("users")
+      .doc(uid)
+      .collection("orders")
+      .orderBy("updated_at", "desc")
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data();
+          list.push(data);
+        });
+
+        dispatch(fetchOrderHistoryAction(list));
+      });
+  };
+};
 
 export const addProductToCart = (addedProduct) => {
   return async (dispatch, getState) => {
