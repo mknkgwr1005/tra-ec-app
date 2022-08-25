@@ -16,6 +16,11 @@ service cloud.firestore {
      }
     }
     
+    match /categories/{categoryId}{
+      allow read:if request.auth.uid!= null;
+      allow write: if request.auth.uid!= null;
+    }
+
     match /products/{productId}{
       allow read:if request.auth.uid!= null;
       allow write: if request.auth.uid!= null;

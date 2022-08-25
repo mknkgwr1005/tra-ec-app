@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -16,6 +16,8 @@ import { TextInput } from "../../Uikit/index";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import { signOut } from "../../../reducks/reducks/users/operations";
+import { db } from "../../../firebase";
+import { toHaveFormValues } from "@testing-library/jest-dom/dist/matchers";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -55,8 +57,29 @@ const ClosableDrawer = (props) => {
   const selectMenu = (event, path) => {
     dispatch(push(path));
     // メニューを選択した後自動的にメニューを閉じる
-    props.onClose(event);
+    props.onClose(event, false);
   };
+
+  const [filters, setFilters] = useState([
+    {
+      func: selectMenu,
+      label: "すべて",
+      id: "all",
+      value: "/",
+    },
+    {
+      func: selectMenu,
+      label: "メンズ",
+      id: "male",
+      value: "/?gender=male",
+    },
+    {
+      func: selectMenu,
+      label: "レディース",
+      id: "female",
+      value: "/?gender=female",
+    },
+  ]);
 
   const menus = [
     {
@@ -81,6 +104,27 @@ const ClosableDrawer = (props) => {
       value: "/user/mypage",
     },
   ];
+
+  useEffect(() => {
+    db.collection("categories")
+      .orderBy("order", "asc")
+      .get()
+      .then((snapshots) => {
+        const list = [];
+        snapshots.forEach((snapshot) => {
+          const category = snapshot.data();
+          list.push({
+            func: selectMenu,
+            label: category.name,
+            id: category.id,
+            value: `/?category=${category.id}`,
+          });
+        });
+        setFilters((prevState) => [...prevState, ...list]);
+      });
+  }, []);
+
+  console.log(filters);
 
   return (
     <nav className={classes.drawer}>
@@ -113,9 +157,7 @@ const ClosableDrawer = (props) => {
               <SearchIcon />
             </IconButton>
           </div>
-
           <Divider />
-
           <List>
             {menus.map((menu) => (
               <ListItem
@@ -131,8 +173,20 @@ const ClosableDrawer = (props) => {
               <ListItemIcon>
                 <ExitToAppIcon />
               </ListItemIcon>
-              <ListItemText primary={"logout"} />
+              <ListItemText primary={"ログアウト"} />
             </ListItem>
+          </List>
+          <Divider />
+          <List>
+            {filters.map((filter) => (
+              <ListItem
+                button
+                key={filter.id}
+                onClick={(e) => filter.func(e, filter.value)}
+              >
+                <ListItemText primary={filter.label} />
+              </ListItem>
+            ))}
           </List>
         </div>
       </Drawer>
