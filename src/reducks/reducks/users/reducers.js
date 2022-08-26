@@ -27,6 +27,11 @@ export const UsersReducer = (state = initialState.users, action) => {
         ...state,
         orders: [...action.payload],
       };
+    case Actions.FETCH_USERS_FAVOURITE:
+      return {
+        ...state,
+        favourite: [...action.payload],
+      };
     // 変更がないとき
     default: {
       return state;

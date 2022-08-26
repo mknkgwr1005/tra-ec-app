@@ -3,10 +3,31 @@ import { push } from "connected-react-router";
 import {
   fetchOrderHistoryAction,
   fetchProductsInCartAction,
+  fetchUsersFavouriteAction,
   signInAction,
   signOutAction,
 } from "./actions";
 import { auth, db, FirebaseTimestamp } from "../../../firebase/index";
+
+export const addUsersFavourite = (addedFavourite) => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const favouriteRef = db
+      .collection("users")
+      .doc(uid)
+      .collection("favourite")
+      .doc();
+    addedFavourite["favouriteId"] = favouriteRef.id;
+    await favouriteRef.set(addedFavourite);
+    dispatch(push("/"));
+  };
+};
+
+export const fetchUsersFavourite = (favourite) => {
+  return async (dispatch) => {
+    dispatch(fetchUsersFavouriteAction(favourite));
+  };
+};
 
 export const fetchOrderHistory = () => {
   return async (dispatch, getState) => {

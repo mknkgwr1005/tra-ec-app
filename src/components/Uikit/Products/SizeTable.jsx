@@ -46,7 +46,11 @@ const SizeTable = (props) => {
                 <TableCell className={classes.iconCell}></TableCell>
                 <TableCell className={classes.iconCell}>
                   <IconButton>
-                    <FavoriteBorderIcon></FavoriteBorderIcon>
+                    <FavoriteBorderIcon
+                      onClick={() =>
+                        props.addFavourite(props.product, item.size)
+                      }
+                    ></FavoriteBorderIcon>
                   </IconButton>
                 </TableCell>
               </TableRow>

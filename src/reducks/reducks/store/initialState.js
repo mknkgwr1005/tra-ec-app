@@ -14,6 +14,7 @@ const initialState = {
     role: "",
     uid: "",
     username: "",
+    favourite: [],
   },
 };
 
