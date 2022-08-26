@@ -16,8 +16,7 @@ import { TextInput } from "../../Uikit/index";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import { signOut } from "../../../reducks/reducks/users/operations";
-import { db } from "../../../firebase";
-import { toHaveFormValues } from "@testing-library/jest-dom/dist/matchers";
+import { searchProducts } from "../../../reducks/reducks/products/operations";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -45,14 +44,7 @@ const ClosableDrawer = (props) => {
   const { container } = props;
   const dispatch = useDispatch();
 
-  const [keyword, setKeyword] = useState("");
-
-  const inputKeyword = useCallback(
-    (event) => {
-      setKeyword(event.target.value);
-    },
-    [setKeyword]
-  );
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const selectMenu = (event, path) => {
     dispatch(push(path));
@@ -78,6 +70,24 @@ const ClosableDrawer = (props) => {
       label: "レディース",
       id: "female",
       value: "/?gender=female",
+    },
+    {
+      func: selectMenu,
+      label: "シャツ",
+      id: "shirts",
+      value: "/?category=shirts",
+    },
+    {
+      func: selectMenu,
+      label: "トップス",
+      id: "tops",
+      value: "/?category=tops",
+    },
+    {
+      func: selectMenu,
+      label: "ワンピース",
+      id: "onepiece",
+      value: "/?category=onepiece",
     },
   ]);
 
@@ -105,26 +115,31 @@ const ClosableDrawer = (props) => {
     },
   ];
 
-  useEffect(() => {
-    db.collection("categories")
-      .orderBy("order", "asc")
-      .get()
-      .then((snapshots) => {
-        const list = [];
-        snapshots.forEach((snapshot) => {
-          const category = snapshot.data();
-          list.push({
-            func: selectMenu,
-            label: category.name,
-            id: category.id,
-            value: `/?category=${category.id}`,
-          });
-        });
-        setFilters((prevState) => [...prevState, ...list]);
-      });
-  }, []);
+  // useEffect(() => {
+  //   db.collection("categories")
+  //     .orderBy("order", "asc")
+  //     .get()
+  //     .then((snapshots) => {
+  //       const list = [];
+  //       snapshots.forEach((snapshot) => {
+  //         const category = snapshot.data();
+  //         list.push({
+  //           func: selectMenu,
+  //           label: category.name,
+  //           id: category.id,
+  //           value: `/?category=${category.id}`,
+  //         });
+  //       });
+  //       setFilters((prevState) => [...prevState, ...list]);
+  //     });
+  // }, []);
 
-  console.log(filters);
+  const inputSearchKeyword = useCallback(
+    (event) => {
+      setSearchKeyword(event.target.value);
+    },
+    [searchKeyword]
+  );
 
   return (
     <nav className={classes.drawer}>
@@ -138,22 +153,19 @@ const ClosableDrawer = (props) => {
         ModalProps={{ keepMounted: true }}
       >
         {/* 検索バー */}
-        <div
-          onClose={(e) => props.onClose(e)}
-          onKeyDown={(e) => props.onClose(e)}
-        >
+        <div onClose={(e) => props.onClose(e)}>
           <div className={classes.searchField}>
             <TextInput
               fullWidth={false}
               label={"キーワードを入力"}
               multiline={false}
-              onChange={inputKeyword}
+              onChange={inputSearchKeyword}
               required={false}
               rows={1}
-              value={keyword}
+              value={searchKeyword}
               type={"text"}
             />
-            <IconButton>
+            <IconButton onClick={() => dispatch(searchProducts(searchKeyword))}>
               <SearchIcon />
             </IconButton>
           </div>

@@ -121,6 +121,25 @@ export const fetchProducts = (gender, category) => {
   };
 };
 
+export const searchProducts = (searchKeyword) => {
+  return async (dispatch) => {
+    let query = productsRef.orderBy("name", "asc");
+    query =
+      searchKeyword !== ""
+        ? query.startAt(searchKeyword).endAt(searchKeyword + "\uf8ff")
+        : query;
+
+    query.get().then((snapshots) => {
+      const ProductList = [];
+      snapshots.forEach((snapshot) => {
+        const product = snapshot.data();
+        ProductList.push(product);
+      });
+      dispatch(fetchProductsAction(ProductList));
+    });
+  };
+};
+
 export const saveProduct = (
   id,
   name,

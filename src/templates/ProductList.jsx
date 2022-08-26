@@ -13,7 +13,7 @@ const ProductList = () => {
   // pathの確認
   const query = selector.router.location.search;
   const gender = /^\?gender=/.test(query) ? query.split("?gender=")[1] : "";
-  const category = /^\?caegaroy=/.test(query)
+  const category = /^\?category=/.test(query)
     ? query.split("?category=")[1]
     : "";
 
