@@ -14,6 +14,8 @@ import MenuIcon from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useState } from "react";
 import { deleteProduct } from "../../../reducks/reducks/products/operations";
+import { useSelector } from "react-redux";
+import { getUsersRole } from "../../../reducks/reducks/users/selectors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +51,9 @@ const ProductCard = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const selector = useSelector((state) => state);
+  const usersRole = getUsersRole(selector);
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -81,32 +86,36 @@ const ProductCard = (props) => {
           </Typography>
           <Typography component="p">\{price}</Typography>
         </div>
-        <IconButton onClick={handleClick}>
-          <MoreVertIcon></MoreVertIcon>
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem
-            onClick={() => {
-              dispatch(push("/product/edit/" + props.id));
-              handleClose();
-            }}
+        {usersRole === "admin" && (
+          <IconButton onClick={handleClick}>
+            <MoreVertIcon></MoreVertIcon>
+          </IconButton>
+        )}
+        {usersRole === "admin" && (
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
           >
-            編集する
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              dispatch(deleteProduct(props.id));
-              handleClose();
-            }}
-          >
-            削除する
-          </MenuItem>
-        </Menu>
+            <MenuItem
+              onClick={() => {
+                dispatch(push("/product/edit/" + props.id));
+                handleClose();
+              }}
+            >
+              編集する
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                dispatch(deleteProduct(props.id));
+                handleClose();
+              }}
+            >
+              削除する
+            </MenuItem>
+          </Menu>
+        )}
       </CardContent>
     </Card>
   );

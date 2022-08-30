@@ -17,6 +17,8 @@ import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import { signOut } from "../../../reducks/reducks/users/operations";
 import { searchProducts } from "../../../reducks/reducks/products/operations";
+import { useSelector } from "react-redux";
+import { getUsersRole } from "../../../reducks/reducks/users/selectors";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -43,6 +45,9 @@ const ClosableDrawer = (props) => {
   const classes = useStyles();
   const { container } = props;
   const dispatch = useDispatch();
+
+  const selector = useSelector((state) => state);
+  const usersRole = getUsersRole(selector);
 
   const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -92,6 +97,23 @@ const ClosableDrawer = (props) => {
   ]);
 
   const menus = [
+    {
+      func: selectMenu,
+      label: "注文履歴",
+      icon: <HistoryIcons />,
+      id: "history",
+      value: "/order/history",
+    },
+    {
+      func: selectMenu,
+      label: "プロフィール",
+      icon: <PersonIcon />,
+      id: "profile",
+      value: "/user/mypage",
+    },
+  ];
+
+  const adminMenus = [
     {
       func: selectMenu,
       label: "商品登録",
@@ -171,6 +193,17 @@ const ClosableDrawer = (props) => {
           </div>
           <Divider />
           <List>
+            {usersRole === "admin" &&
+              adminMenus.map((menu) => (
+                <ListItem
+                  button
+                  key={menu.id}
+                  onClick={(e) => menu.func(e, menu.value)}
+                >
+                  <ListItemIcon>{menu.icon}</ListItemIcon>
+                  <ListItemText primary={menu.label} />
+                </ListItem>
+              ))}
             {menus.map((menu) => (
               <ListItem
                 button

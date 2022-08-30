@@ -8,6 +8,7 @@ import {
   getProductsInCart,
   getUsersFavourite,
   getUserId,
+  getUserName,
 } from "../../../reducks/reducks/users/selectors";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -23,6 +24,9 @@ const HeaderMenus = (props) => {
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
   const dispatch = useDispatch();
+
+  const userName = getUserName(selector);
+
   let productsInCart = getProductsInCart(selector);
   let usersFavourite = getUsersFavourite(selector);
 
@@ -96,6 +100,7 @@ const HeaderMenus = (props) => {
 
   return (
     <>
+      <div>ようこそ、{userName}さん</div>
       <IconButton onClick={() => dispatch(push("/cart"))}>
         <Badge badgeContent={productsInCart.length} color="secondary">
           <ShoppingCartIcon />
