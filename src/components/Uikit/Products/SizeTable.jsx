@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/styles";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { getUsersFavourite } from "../../../reducks/reducks/users/selectors";
+import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
   iconCell: {
@@ -22,12 +24,25 @@ const SizeTable = (props) => {
 
   const sizes = props.sizes;
 
+  const selector = useSelector((state) => state);
+  const usersFavourite = getUsersFavourite(selector);
+
+  const favouriteList = [];
+  const favouriteSizes = [];
+
+  usersFavourite.map((favourite) => favouriteList.push(favourite.productId));
+  usersFavourite.map((favourite) => favouriteSizes.push(favourite.size));
+
+  const handleFavouriteBtn = () => {
+    return window.alert("お気に入りに登録済み");
+  };
+
   return (
     <TableContainer>
       <Table>
         <TableBody>
-          {props.sizes.length > 0 &&
-            props.sizes.map((item, index) => (
+          {sizes.length > 0 &&
+            sizes.map((item, index) => (
               <TableRow key={item.size}>
                 <TableCell component="th" scope="row">
                   {item.size}
@@ -45,12 +60,21 @@ const SizeTable = (props) => {
                 )}
                 <TableCell className={classes.iconCell}></TableCell>
                 <TableCell className={classes.iconCell}>
-                  <IconButton>
-                    <FavoriteBorderIcon
-                      onClick={() =>
-                        props.addFavourite(props.product, item.size)
-                      }
-                    ></FavoriteBorderIcon>
+                  <IconButton
+                    color={
+                      favouriteList.includes(props.product.id) &&
+                      favouriteSizes.includes(item.size)
+                        ? "primary"
+                        : "default"
+                    }
+                    onClick={
+                      favouriteList.includes(props.product.id) &&
+                      favouriteSizes.includes(item.size)
+                        ? handleFavouriteBtn
+                        : () => props.addFavourite(props.product, item.size)
+                    }
+                  >
+                    <FavoriteBorderIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>
