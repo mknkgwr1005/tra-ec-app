@@ -121,20 +121,6 @@ const ClosableDrawer = (props) => {
       id: "register",
       value: "/product/edit",
     },
-    {
-      func: selectMenu,
-      label: "注文履歴",
-      icon: <HistoryIcons />,
-      id: "history",
-      value: "/order/history",
-    },
-    {
-      func: selectMenu,
-      label: "プロフィール",
-      icon: <PersonIcon />,
-      id: "profile",
-      value: "/user/mypage",
-    },
   ];
 
   // useEffect(() => {

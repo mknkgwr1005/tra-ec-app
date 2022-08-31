@@ -15,6 +15,7 @@ const initialState = {
     uid: "",
     username: "",
     favourite: [],
+    email: "",
   },
 };
 

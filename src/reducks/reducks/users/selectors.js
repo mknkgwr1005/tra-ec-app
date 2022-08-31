@@ -11,6 +11,11 @@ export const getIsSignedIn = createSelector(
   (state) => state.isSignedIn
 );
 
+export const getUsersEmail = createSelector(
+  [usersSelector],
+  (state) => state.email
+);
+
 export const getUsersRole = createSelector(
   [usersSelector],
   (state) => state.role

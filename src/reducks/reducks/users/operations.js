@@ -76,17 +76,24 @@ export const resetPassword = (email) => {
       alert("必須項目が未入力です");
       return false;
     } else {
-      auth
-        .sendPasswordResetEmail(email)
-        .then(() => {
-          alert(
-            "入力されたアドレスにパスワードリセット用のメールを送信しました"
-          );
-          dispatch(push("/signin"));
-        })
-        .catch(() => {
-          alert("パスワードリセットに失敗しました。通信状況を確認してください");
-        });
+      const result = window.confirm("パスワードをリセットしますか？");
+      if (result) {
+        auth
+          .sendPasswordResetEmail(email)
+          .then(() => {
+            alert(
+              "入力されたアドレスにパスワードリセット用のメールを送信しました"
+            );
+            dispatch(push("/signin"));
+          })
+          .catch(() => {
+            alert(
+              "パスワードリセットに失敗しました。通信状況を確認してください"
+            );
+          });
+      } else {
+        alert("パスワードリセットをキャンセルしました");
+      }
     }
   };
 };
@@ -109,6 +116,7 @@ export const listenAuthState = () => {
                 role: data.role,
                 uid: uid,
                 username: data.username,
+                email: data.email,
               })
             );
           });
@@ -156,6 +164,7 @@ export const signIn = (email, password) => {
                 role: data.role,
                 uid: uid,
                 username: data.username,
+                email: data.email,
               })
             );
 

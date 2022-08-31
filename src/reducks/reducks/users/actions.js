@@ -9,6 +9,7 @@ export const signInAction = (userState) => {
       role: userState.role,
       uid: userState.uid,
       username: userState.username,
+      email: userState.email,
     },
   };
 };
@@ -22,6 +23,7 @@ export const signOutAction = () => {
       role: "",
       uid: "",
       username: "",
+      email: "",
     },
   };
 };
