@@ -1,13 +1,17 @@
 import React, { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  getPersonalData,
   getUserName,
   getUsersEmail,
   getUsersRole,
 } from "../reducks/reducks/users/selectors";
 import { push } from "connected-react-router";
 import { PrimaryButton, GreyButton } from "../components/Uikit";
-import { resetPassword } from "../reducks/reducks/users/operations";
+import {
+  fetchPersonalData,
+  resetPassword,
+} from "../reducks/reducks/users/operations";
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/styles";
 import Table from "@mui/material/Table";
@@ -31,6 +35,8 @@ const MyPage = () => {
   const userName = getUserName(selector);
   const userRole = getUsersRole(selector);
   const userEmail = getUsersEmail(selector);
+  const userPersonalData = getPersonalData(selector);
+
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -44,12 +50,20 @@ const MyPage = () => {
     }
   });
 
+  useEffect(() => {
+    dispatch(fetchPersonalData());
+  }, []);
+
   const goToOrderHistory = useCallback(() => {
     dispatch(push("/order/history"));
   });
 
   const goToFavourite = useCallback(() => {
     dispatch(push("/favourite"));
+  });
+
+  const editPersonalData = useCallback(() => {
+    dispatch(push("/user/personal"));
   });
 
   return (
@@ -72,6 +86,34 @@ const MyPage = () => {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableCell align="right">氏名</TableCell>
+              <TableCell align="right">郵便番号</TableCell>
+              <TableCell align="right">住所</TableCell>
+              <TableCell align="right">電話番号</TableCell>
+            </TableHead>
+            <TableBody>
+              {userPersonalData.length > 0 &&
+                userPersonalData.map((data) => (
+                  <>
+                    <TableCell align="right">{data.name}</TableCell>
+                    <TableCell align="right">{data.zipcode}</TableCell>
+                    <TableCell align="right">{data.address}</TableCell>
+                    <TableCell align="right">{data.telephone}</TableCell>
+                  </>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <div className="module-spacer--medium" />
+        <PrimaryButton
+          label={"送付先情報を編集する"}
+          onClick={editPersonalData}
+        />
+
         <div className="module-spacer--medium" />
         <PrimaryButton label={"購入履歴"} onClick={goToOrderHistory} />
         <PrimaryButton label={"お気に入り"} onClick={goToFavourite} />

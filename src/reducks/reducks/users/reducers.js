@@ -32,6 +32,11 @@ export const UsersReducer = (state = initialState.users, action) => {
         ...state,
         favourite: [...action.payload],
       };
+    case Actions.FETCH_PERSONAL_DATA:
+      return {
+        ...state,
+        personal: [...action.payload],
+      };
     // 変更がないとき
     default: {
       return state;

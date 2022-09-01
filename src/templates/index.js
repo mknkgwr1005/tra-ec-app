@@ -8,3 +8,5 @@ export { default as CartList } from "./CartList";
 export { default as OrderConfirm } from "./OrderConfirm";
 export { default as OrderHistory } from "./OrderHistory";
 export { default as FavouriteList } from "./FavouriteList";
+export { default as OrderComplete } from "./OrderComplete";
+export { default as UserPersonal } from "./UserPersonal";

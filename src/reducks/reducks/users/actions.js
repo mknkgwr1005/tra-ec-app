@@ -51,3 +51,12 @@ export const fetchUsersFavouriteAction = (favourite) => {
     payload: favourite,
   };
 };
+
+export const FETCH_PERSONAL_DATA = "FETCH_PERSONAL_DATA";
+export const fetchPersonalDataAction = (personalData) => {
+  // reducerに渡す値
+  return {
+    type: "FETCH_PERSONAL_DATA",
+    payload: personalData,
+  };
+};

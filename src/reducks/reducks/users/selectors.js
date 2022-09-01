@@ -40,3 +40,8 @@ export const getUsersFavourite = createSelector(
   [usersSelector],
   (state) => state.favourite
 );
+
+export const getPersonalData = createSelector(
+  [usersSelector],
+  (state) => state.personal
+);

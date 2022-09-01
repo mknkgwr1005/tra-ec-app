@@ -2,6 +2,7 @@
 import { push } from "connected-react-router";
 import {
   fetchOrderHistoryAction,
+  fetchPersonalDataAction,
   fetchProductsInCartAction,
   fetchUsersFavouriteAction,
   signInAction,
@@ -67,6 +68,52 @@ export const addProductToCart = (addedProduct) => {
 export const fetchProductsInCart = (products) => {
   return async (dispatch) => {
     dispatch(fetchProductsInCartAction(products));
+  };
+};
+
+export const addPersonalData = (personalData) => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    if (!fetchPersonalData) {
+      const docData = db
+        .collection("users")
+        .doc(uid)
+        .collection("personal")
+        .doc();
+      personalData["personalId"] = docData.id;
+      await docData.set(personalData);
+      dispatch(push("/"));
+    } else {
+      const personalId = getState().users.personal[0].personalId;
+      const personalRef = db
+        .collection("users")
+        .doc(uid)
+        .collection("personal")
+        .doc(personalId);
+
+      personalRef.set(personalData, { merge: true });
+      dispatch(push("/"));
+    }
+  };
+};
+
+export const fetchPersonalData = () => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const list = [];
+
+    db.collection("users")
+      .doc(uid)
+      .collection("personal")
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data();
+          list.push(data);
+        });
+
+        dispatch(fetchPersonalDataAction(list));
+      });
   };
 };
 

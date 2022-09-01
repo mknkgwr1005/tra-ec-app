@@ -12,6 +12,8 @@ import {
   OrderConfirm,
   OrderHistory,
   FavouriteList,
+  OrderComplete,
+  UserPersonal,
 } from "./templates";
 import Auth from "./Auth";
 import Admin from "./Admin";
@@ -35,6 +37,8 @@ const Router = () => {
         <Route exact path="/favourite" component={FavouriteList} />
         <Route exact path="/order/confirm" component={OrderConfirm} />
         <Route exact path="/order/history" component={OrderHistory} />
+        <Route exact path="/order/complete" component={OrderComplete} />
+        <Route exact path="/user/personal" component={UserPersonal} />
       </Auth>
     </Switch>
   );
