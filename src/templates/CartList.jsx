@@ -29,6 +29,14 @@ const CartList = () => {
     dispatch(push("/"));
   }, []);
 
+  const disableCart = (products) => {
+    if (products.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <section className="c-section-wrapin">
       <h2 className="u-text_headline">ショッピングカート</h2>
@@ -40,7 +48,11 @@ const CartList = () => {
       </List>
       <div className="module-spacer--medium">
         <div className="p-grid_column">
-          <PrimaryButton label={"レジへ進む"} onClick={goToOrder} />
+          <PrimaryButton
+            label={"レジへ進む"}
+            onClick={goToOrder}
+            disabled={disableCart(productsInCart)}
+          />
           <div className="module-spacer--extra-extra-small" />
           <GreyButton label={"ショッピングを続ける"} onClick={backToHome} />
         </div>

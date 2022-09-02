@@ -1,12 +1,21 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsInCart } from "../reducks/reducks/users/selectors";
+import {
+  getProductsInCart,
+  getPersonalData,
+} from "../reducks/reducks/users/selectors";
 import { makeStyles } from "@material-ui/styles";
 import { CartListItem } from "../components/Uikit/Products/";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import { PrimaryButton, TextDetail } from "../components/Uikit";
 import { orderProduct } from "../reducks/reducks/products/operations";
+import Select, { SelectChangeEvent } from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Box from "@material-ui/core/Box";
+import { PaymentList } from "../components/Uikit/Payment";
 
 const useStyles = makeStyles((theme) => ({
   detailBox: {
@@ -22,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid rgba(0,0,0,0.2)",
     borderRadius: 4,
     boxShadow: "0 4px 2px 2px rgba(0,0,0,0.2",
-    height: 256,
+    height: "auto",
     margin: "24px auto 16px auto",
     padding: 16,
-    width: 288,
+    width: 512,
   },
 }));
 
@@ -34,6 +43,7 @@ const OrderConfirm = () => {
   const classes = useStyles();
   const selector = useSelector((state) => state);
   const productsInCart = getProductsInCart(selector);
+  const userPersonalData = getPersonalData(selector);
 
   //   第２引数に変化が変わるたびに再レンダーされる
   const subtotal = useMemo(() => {
@@ -48,6 +58,20 @@ const OrderConfirm = () => {
   const order = useCallback(() => {
     dispatch(orderProduct(productsInCart, totalPrice));
   }, [productsInCart, totalPrice]);
+
+  const [paymentOptions, setPaymentOptions] = useState("");
+
+  const handleChange = (e) => {
+    setPaymentOptions(e.target.value);
+  };
+
+  const disableOrder = (products) => {
+    if (products.length === 0 || !paymentOptions) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
     <section className="c-section-wrapin">
@@ -76,7 +100,42 @@ const OrderConfirm = () => {
           <TextDetail label={"消費税"} value={"/" + tax} />
           <Divider />
           <TextDetail label={"合計（税込み）"} value={"/" + totalPrice} />
-          <PrimaryButton label={"注文する"} onClick={order} />
+          <Divider />
+          <Divider />
+          <div>
+            <TextDetail label="送付先情報" />
+            {userPersonalData.map((data) => (
+              <>
+                <TextDetail label={"氏名：" + data.name} />
+                <TextDetail label={"郵便番号：" + data.zipcode} />
+                <TextDetail label={"住所：" + data.address} />
+                <TextDetail label={"電話番号：" + data.telephone} />
+              </>
+            ))}
+          </div>
+          <Box>
+            <FormControl fullWidth>
+              <InputLabel id="payment">支払方法</InputLabel>
+              <Select
+                id="payment"
+                labelId="payment"
+                value={paymentOptions}
+                label="支払方法"
+                onChange={handleChange}
+              >
+                <MenuItem value="credit">クレジットカード決済</MenuItem>
+                <MenuItem value="convenience">コンビニ決済</MenuItem>
+                <MenuItem value="cash">代金引換</MenuItem>
+              </Select>
+            </FormControl>
+            <PaymentList paymentOptions={paymentOptions} />
+          </Box>
+          <div className="module-spacer--medium" />
+          <PrimaryButton
+            label={"注文する"}
+            onClick={order}
+            disabled={disableOrder(productsInCart)}
+          />
         </div>
       </div>
     </section>

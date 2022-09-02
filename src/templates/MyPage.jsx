@@ -87,6 +87,7 @@ const MyPage = () => {
           </Table>
         </TableContainer>
 
+        <div className={classes.title}>送付先情報</div>
         <TableContainer>
           <Table>
             <TableHead>
@@ -110,7 +111,7 @@ const MyPage = () => {
         </TableContainer>
         <div className="module-spacer--medium" />
         <PrimaryButton
-          label={"送付先情報を編集する"}
+          label={"送付先情報を変更する"}
           onClick={editPersonalData}
         />
 

@@ -21,6 +21,7 @@ const PrimaryButton = (props) => {
       className={classes.button}
       variant="contained"
       onClick={() => props.onClick()}
+      disabled={props.disabled}
     >
       {props.label}
     </Button>
