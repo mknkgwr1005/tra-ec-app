@@ -44,6 +44,7 @@ const OrderConfirm = () => {
   const selector = useSelector((state) => state);
   const productsInCart = getProductsInCart(selector);
   const userPersonalData = getPersonalData(selector);
+  const [paymentOptions, setPaymentOptions] = useState("");
 
   //   第２引数に変化が変わるたびに再レンダーされる
   const subtotal = useMemo(() => {
@@ -56,10 +57,8 @@ const OrderConfirm = () => {
   const totalPrice = subtotal + shippingFee + tax;
 
   const order = useCallback(() => {
-    dispatch(orderProduct(productsInCart, totalPrice));
-  }, [productsInCart, totalPrice]);
-
-  const [paymentOptions, setPaymentOptions] = useState("");
+    dispatch(orderProduct(productsInCart, totalPrice, paymentOptions));
+  }, [productsInCart, totalPrice, paymentOptions]);
 
   const handleChange = (e) => {
     setPaymentOptions(e.target.value);

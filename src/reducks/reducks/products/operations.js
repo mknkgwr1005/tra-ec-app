@@ -4,7 +4,7 @@ import { fetchProductsAction, deleteProductsAction } from "./actions";
 
 const productsRef = db.collection("products");
 
-export const orderProduct = (productsInCart, price) => {
+export const orderProduct = (productsInCart, price, paymentOptions) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
     const usersRef = db.collection("users").doc(uid);
@@ -41,6 +41,7 @@ export const orderProduct = (productsInCart, price) => {
         name: product.name,
         price: product.price,
         size: product.size,
+        payment: paymentOptions,
       };
 
       batch.update(productsRef.doc(product.productId), { sizes: updatedSizes });
@@ -75,6 +76,7 @@ export const orderProduct = (productsInCart, price) => {
             products: products,
             shipping_date: shippingDate,
             updated_at: timestamp,
+            payment: paymentOptions,
           };
 
           orderRef.set(history);

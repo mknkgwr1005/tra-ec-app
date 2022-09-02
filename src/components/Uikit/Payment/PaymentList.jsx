@@ -34,9 +34,6 @@ const PaymentList = (props) => {
       {/* コンビニ決済画面 */}
       {props.paymentOptions === "convenience" && (
         <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">
-            コンビニ決済
-          </FormLabel>
           <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             defaultValue="female"

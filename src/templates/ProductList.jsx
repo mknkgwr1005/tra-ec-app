@@ -1,9 +1,11 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductCard } from "../components/Uikit/Products";
 import { fetchProducts } from "../reducks/reducks/products/operations";
 import { getProducts } from "../reducks/reducks/products/selectors";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -35,6 +37,9 @@ const ProductList = () => {
             />
           ))}
       </div>
+      <Stack spacing={2}>
+        <Pagination count={10} variant="outlined" color="primary" />
+      </Stack>
     </section>
   );
 };

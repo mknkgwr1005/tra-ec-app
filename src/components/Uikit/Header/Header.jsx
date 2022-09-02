@@ -13,6 +13,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1,
+      height: 128,
     },
     menuBar: {
       backgroundColor: "#fff",

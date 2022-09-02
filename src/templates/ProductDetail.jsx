@@ -10,6 +10,8 @@ import {
   addProductToCart,
   addUsersFavourite,
 } from "../reducks/reducks/users/operations";
+import { PrimaryButton } from "../components/Uikit";
+import { push } from "connected-react-router";
 
 const useStyles = makeStyles((theme) => ({
   sliderBox: {
@@ -133,6 +135,10 @@ const ProductDetail = () => {
           </div>
         </div>
       )}
+      <PrimaryButton
+        label={"戻る"}
+        onClick={() => dispatch(push("/"))}
+      ></PrimaryButton>
     </section>
   );
 };
