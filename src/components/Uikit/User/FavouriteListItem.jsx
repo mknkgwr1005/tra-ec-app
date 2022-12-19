@@ -65,7 +65,7 @@ const FavouriteListItem = (props) => {
           />
         </ListItemAvatar>
         <ListItemText primary={name} secondary={"サイズ" + size}></ListItemText>
-        <ListItemText primary={"/" + price}></ListItemText>
+        <ListItemText primary={"￥" + price}></ListItemText>
         <IconButton
           onClick={() =>
             removeProductFromFavourite(props.favourite.favouriteId)

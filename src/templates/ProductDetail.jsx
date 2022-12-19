@@ -122,7 +122,9 @@ const ProductDetail = () => {
           <ImageSwiper images={product.images} />
           <div className={classes.detail}>
             <h2 className="u-text_headline">{product.name}</h2>
-            <p className="classes.price">{product.price.toLocaleString()}</p>
+            <p className="classes.price">
+              {"￥" + product.price.toLocaleString()}
+            </p>
             <div className="module-spacer--small"></div>
             <SizeTable
               product={product}

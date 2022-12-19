@@ -1,4 +1,5 @@
 import { db, FirebaseTimestamp } from "../../../firebase";
+import { getDocs } from "firebase/firestore";
 import { push } from "connected-react-router";
 import { fetchProductsAction, deleteProductsAction } from "./actions";
 
@@ -106,11 +107,27 @@ export const deleteProduct = (id) => {
   };
 };
 
-export const fetchProducts = (gender, category) => {
+export const fetchProducts = (
+  gender,
+  category,
+  productsPerPage,
+  currentPage
+) => {
   return async (dispatch) => {
     let query = productsRef.orderBy("updated_at", "desc");
+    const productListLength = (await query.get()).docs.length;
     query = gender !== "" ? query.where("gender", "==", gender) : query;
     query = category !== "" ? query.where("category", "==", category) : query;
+    query =
+      productsPerPage > 0 && productListLength > productsPerPage
+        ? query.limit(productsPerPage)
+        : query;
+
+    if (currentPage > 1 && productListLength !== 0) {
+      const lastSnapshot = (await query.get()).docs[productsPerPage - 1];
+      const next = query.startAfter(lastSnapshot).limit(productsPerPage);
+      query = next;
+    }
 
     query.get().then((snapshots) => {
       const ProductList = [];

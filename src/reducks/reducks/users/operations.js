@@ -71,6 +71,26 @@ export const fetchProductsInCart = (products) => {
   };
 };
 
+export const fetchPersonalData = () => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const list = [];
+
+    db.collection("users")
+      .doc(uid)
+      .collection("personal")
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data();
+          list.push(data);
+        });
+
+        dispatch(fetchPersonalDataAction(list));
+      });
+  };
+};
+
 export const addPersonalData = (personalData) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
@@ -94,26 +114,6 @@ export const addPersonalData = (personalData) => {
       personalRef.set(personalData, { merge: true });
       dispatch(push("/"));
     }
-  };
-};
-
-export const fetchPersonalData = () => {
-  return async (dispatch, getState) => {
-    const uid = getState().users.uid;
-    const list = [];
-
-    db.collection("users")
-      .doc(uid)
-      .collection("personal")
-      .get()
-      .then((snapshots) => {
-        snapshots.forEach((snapshot) => {
-          const data = snapshot.data();
-          list.push(data);
-        });
-
-        dispatch(fetchPersonalDataAction(list));
-      });
   };
 };
 

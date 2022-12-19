@@ -19,6 +19,7 @@ import { signOut } from "../../../reducks/reducks/users/operations";
 import { searchProducts } from "../../../reducks/reducks/products/operations";
 import { useSelector } from "react-redux";
 import { getUsersRole } from "../../../reducks/reducks/users/selectors";
+import { db } from "../../../firebase";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -64,36 +65,6 @@ const ClosableDrawer = (props) => {
       id: "all",
       value: "/",
     },
-    {
-      func: selectMenu,
-      label: "メンズ",
-      id: "male",
-      value: "/?gender=male",
-    },
-    {
-      func: selectMenu,
-      label: "レディース",
-      id: "female",
-      value: "/?gender=female",
-    },
-    {
-      func: selectMenu,
-      label: "シャツ",
-      id: "shirts",
-      value: "/?category=shirts",
-    },
-    {
-      func: selectMenu,
-      label: "トップス",
-      id: "tops",
-      value: "/?category=tops",
-    },
-    {
-      func: selectMenu,
-      label: "ワンピース",
-      id: "onepiece",
-      value: "/?category=onepiece",
-    },
   ]);
 
   const menus = [
@@ -123,24 +94,25 @@ const ClosableDrawer = (props) => {
     },
   ];
 
-  // useEffect(() => {
-  //   db.collection("categories")
-  //     .orderBy("order", "asc")
-  //     .get()
-  //     .then((snapshots) => {
-  //       const list = [];
-  //       snapshots.forEach((snapshot) => {
-  //         const category = snapshot.data();
-  //         list.push({
-  //           func: selectMenu,
-  //           label: category.name,
-  //           id: category.id,
-  //           value: `/?category=${category.id}`,
-  //         });
-  //       });
-  //       setFilters((prevState) => [...prevState, ...list]);
-  //     });
-  // }, []);
+  useEffect(() => {
+    db.collection("categories")
+      .orderBy("order", "asc")
+      .get()
+      .then((snapshots) => {
+        const list = [];
+        snapshots.forEach((snapshot) => {
+          const category = snapshot.data();
+          list.push({
+            func: selectMenu,
+            label: category.name,
+            id: category.id,
+            value: `/?category=${category.id}`,
+          });
+        });
+
+        setFilters((prevState) => [...prevState, ...list]);
+      });
+  }, []);
 
   const inputSearchKeyword = useCallback(
     (event) => {

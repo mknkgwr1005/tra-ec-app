@@ -84,7 +84,7 @@ const ProductCard = (props) => {
           <Typography color="textSecondary" component="p">
             {props.name}
           </Typography>
-          <Typography component="p">\{price}</Typography>
+          <Typography component="p">{"￥" + price}</Typography>
         </div>
         {usersRole === "admin" && (
           <IconButton onClick={handleClick}>

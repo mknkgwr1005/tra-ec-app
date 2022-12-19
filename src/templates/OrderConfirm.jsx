@@ -16,6 +16,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Box from "@material-ui/core/Box";
 import { PaymentList } from "../components/Uikit/Payment";
+import { fetchPersonalData } from "../reducks/reducks/users/operations";
+import { push } from "connected-react-router";
 
 const useStyles = makeStyles((theme) => ({
   detailBox: {
@@ -52,7 +54,7 @@ const OrderConfirm = () => {
   }, [productsInCart]);
 
   const shippingFee = subtotal >= 10000 ? 0 : 210;
-  const tax = subtotal * 0.1;
+  const tax = parseInt(subtotal * 0.1);
 
   const totalPrice = subtotal + shippingFee + tax;
 
@@ -72,6 +74,13 @@ const OrderConfirm = () => {
     }
   };
 
+  /**
+   * ユーザーのプロフィールをfirebaseから呼び出す
+   */
+  useEffect(() => {
+    dispatch(fetchPersonalData());
+  }, []);
+
   return (
     <section className="c-section-wrapin">
       <h2 className="u-text_headline">注文の確認</h2>
@@ -90,27 +99,28 @@ const OrderConfirm = () => {
         <div className={classes.orderBox}>
           <TextDetail
             label={"商品合計"}
-            value={"/" + subtotal.toLocaleString()}
+            value={"￥" + subtotal.toLocaleString()}
           />
           <TextDetail
             label={"送料"}
-            value={"/" + shippingFee.toLocaleString()}
+            value={"￥" + shippingFee.toLocaleString()}
           />
-          <TextDetail label={"消費税"} value={"/" + tax} />
+          <TextDetail label={"消費税"} value={"￥" + tax} />
           <Divider />
-          <TextDetail label={"合計（税込み）"} value={"/" + totalPrice} />
+          <TextDetail label={"合計（税込み）"} value={"￥" + totalPrice} />
           <Divider />
           <Divider />
           <div>
             <TextDetail label="送付先情報" />
-            {userPersonalData.map((data) => (
-              <>
-                <TextDetail label={"氏名：" + data.name} />
-                <TextDetail label={"郵便番号：" + data.zipcode} />
-                <TextDetail label={"住所：" + data.address} />
-                <TextDetail label={"電話番号：" + data.telephone} />
-              </>
-            ))}
+            {userPersonalData.length > 0 &&
+              userPersonalData.map((data) => (
+                <>
+                  <TextDetail label={"氏名：" + data.name} />
+                  <TextDetail label={"郵便番号：" + data.zipcode} />
+                  <TextDetail label={"住所：" + data.address} />
+                  <TextDetail label={"電話番号：" + data.telephone} />
+                </>
+              ))}
           </div>
           <Box>
             <FormControl fullWidth>
