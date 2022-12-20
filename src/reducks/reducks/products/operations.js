@@ -123,7 +123,7 @@ export const fetchProducts = (
         ? query.limit(productsPerPage)
         : query;
 
-    if (currentPage > 1 && productListLength !== 0) {
+    if (currentPage > 1) {
       const lastSnapshot = (await query.get()).docs[productsPerPage - 1];
       const next = query.startAfter(lastSnapshot).limit(productsPerPage);
       query = next;

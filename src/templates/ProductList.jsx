@@ -51,7 +51,7 @@ const ProductList = () => {
   useEffect(() => {
     if (category === "") {
       getAllProduct();
-    } else {
+    } else if (category !== "" && currentPage > 1) {
       resetPage(1);
       changeProductsLength(products.length);
     }
