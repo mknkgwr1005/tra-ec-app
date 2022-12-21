@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductCard } from "../components/Uikit/Products";
 import {
@@ -24,15 +24,21 @@ const ProductList = () => {
     ? query.split("?category=")[1]
     : "";
 
-  useEffect(() => {
-    dispatch(fetchProducts(gender, category, productsPerPage, currentPage));
-  }, [query]);
-
   const [productsPerPage, setProductsPerPage] = useState(5);
   const [allProductsLength, setAllProductsLength] = useState(
     parseInt(products.length)
   );
   const [currentPage, setcurrentPage] = useState(1);
+  // useRefを使って、前の値を保持する
+  const usePrevious = (value) => {
+    const ref = useRef(value);
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  };
+  let beforeValue = usePrevious(currentPage);
+  const lastProduct = products[productsPerPage - 1];
 
   /**すべての商品を取得 */
   const getAllProduct = () => {
@@ -44,16 +50,29 @@ const ProductList = () => {
   };
 
   const handleChangePage = (event, value) => {
-    setcurrentPage(value);
     changeCurrentPage(value);
   };
+
+  useEffect(() => {
+    dispatch(
+      fetchProducts(
+        gender,
+        category,
+        productsPerPage,
+        currentPage,
+        lastProduct,
+        beforeValue
+      )
+    );
+  }, [query]);
 
   useEffect(() => {
     if (category === "") {
       getAllProduct();
     } else if (category !== "" && currentPage > 1) {
+      /**フィルタリングしたとき、ページの総数を変更して、ページを1ページ目に戻す */
       resetPage(1);
-      changeProductsLength(products.length);
+      changePageTotalNum(products.length);
     }
   });
 
@@ -61,21 +80,23 @@ const ProductList = () => {
     setcurrentPage(num);
   };
 
-  const changeProductsLength = (productsList) => {
-    setAllProductsLength(productsList);
+  const changePageTotalNum = (allProductNum) => {
+    setAllProductsLength(allProductNum);
+    dispatch(fetchProducts());
+  };
+
+  const changeCurrentPage = (nextPage) => {
+    setcurrentPage(nextPage);
     dispatch(
       fetchProducts(
         gender,
         category,
         productsPerPage,
-        currentPage,
-        productsList
+        nextPage,
+        lastProduct,
+        beforeValue
       )
     );
-  };
-
-  const changeCurrentPage = (nextPage) => {
-    dispatch(fetchProducts(gender, category, productsPerPage, nextPage));
   };
 
   return (

@@ -19,8 +19,6 @@ const UserPersonal = () => {
     dispatch(fetchPersonalData());
   }, []);
 
-  console.log(userPersonalData);
-
   useEffect(() => {
     if (userPersonalData.length > 0) {
       userPersonalData.map((data) => {

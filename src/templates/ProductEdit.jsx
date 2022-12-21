@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { saveProduct } from "../reducks/reducks/products/operations";
 import { TextInput, SelectBox, PrimaryButton } from "../components/Uikit";
@@ -13,7 +13,8 @@ const ProductEdit = () => {
     id = id.split("/")[1];
   }
 
-  const [name, setName] = useState(""),
+  const [order, setOrder] = useState(0),
+    [name, setName] = useState(""),
     [description, setDescription] = useState(""),
     [category, setCategory] = useState(""),
     [price, setPrice] = useState(""),
@@ -30,6 +31,19 @@ const ProductEdit = () => {
   });
   const inputPrice = useCallback((event) => {
     setPrice(event.target.value);
+  });
+
+  const handleCountOrder = async () => {
+    const lastOrder = await db
+      .collection("products")
+      .orderBy("order", "desc")
+      .get();
+    const newNum = lastOrder.docs[0].data().order;
+    setOrder(newNum + 1);
+  };
+
+  useEffect(() => {
+    handleCountOrder();
   });
 
   useEffect(() => {
@@ -54,6 +68,7 @@ const ProductEdit = () => {
     { id: "female", name: "女" },
   ];
 
+  // すでにある商品を編集するとき
   useEffect(() => {
     if (id !== "") {
       db.collection("products")
@@ -130,6 +145,7 @@ const ProductEdit = () => {
             onClick={() =>
               dispatch(
                 saveProduct(
+                  order,
                   id,
                   name,
                   description,
