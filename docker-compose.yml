@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  react-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./tra-ec-app:/usr/src/app # ローカルをコンテナ内にマウント
+    command: sh -c "cd tra-ec-app && yarn start"
+    ports:
+      - "3001:3001"
+    stdin_open: true

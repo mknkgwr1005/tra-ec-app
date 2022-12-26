@@ -113,13 +113,13 @@ export const fetchProducts = (
   productsPerPage,
   currentPage,
   lastProduct,
-  beforePageNum
+  beforePageNum,
+  firstProduct
 ) => {
   return async (dispatch) => {
-    let query = productsRef.orderBy("updated_at", "desc");
+    let query = productsRef.orderBy("order", "desc").limit(productsPerPage);
     query = gender !== "" ? query.where("gender", "==", gender) : query;
     query = category !== "" ? query.where("category", "==", category) : query;
-    query = productsPerPage > 0 ? query.limit(productsPerPage) : query;
 
     // ページング機能
     // 次ページへ行くとき、前の値が今のページ数より小さい場合は、前のページの最後のデータ以降のデータを表示する
@@ -127,14 +127,22 @@ export const fetchProducts = (
       const lastId = lastProduct.id;
       const lastSnapshot = await (await query.where("id", "==", lastId).get())
         .docs[0];
-      const next = query.startAfter(lastSnapshot).limit(productsPerPage);
+      const next = productsRef
+        .orderBy("order", "desc")
+        .startAfter(lastSnapshot)
+        .limit(productsPerPage);
       query = next;
       // 前ページへ戻るとき、前の値が今のページ数より大きい場合は、前のページの最後のデータ以前のデータを表示する
-    } else if (currentPage < beforePageNum && lastProduct) {
-      const lastId = lastProduct.id;
+    } else if (currentPage < beforePageNum) {
+      console.log("goBack");
+      console.log(firstProduct);
+      const lastId = firstProduct.id;
       const lastSnapshot = await (await query.where("id", "==", lastId).get())
         .docs[0];
-      const before = query.endBefore(lastSnapshot).limit(productsPerPage);
+      const before = productsRef
+        .orderBy("order", "desc")
+        .endBefore(lastSnapshot)
+        .limit(productsPerPage);
       query = before;
     }
 

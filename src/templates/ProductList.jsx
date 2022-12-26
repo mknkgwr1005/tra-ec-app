@@ -38,7 +38,9 @@ const ProductList = () => {
     return ref.current;
   };
   let beforeValue = usePrevious(currentPage);
-  const lastProduct = products[productsPerPage - 1];
+  const firstProduct = products[0];
+  const productsLength = products.length;
+  const lastProduct = products[productsLength - 1];
 
   /**すべての商品を取得 */
   const getAllProduct = () => {
@@ -61,7 +63,8 @@ const ProductList = () => {
         productsPerPage,
         currentPage,
         lastProduct,
-        beforeValue
+        beforeValue,
+        firstProduct
       )
     );
   }, [query]);
@@ -82,7 +85,7 @@ const ProductList = () => {
 
   const changePageTotalNum = (allProductNum) => {
     setAllProductsLength(allProductNum);
-    dispatch(fetchProducts());
+    // dispatch(fetchProducts());
   };
 
   const changeCurrentPage = (nextPage) => {
@@ -94,7 +97,8 @@ const ProductList = () => {
         productsPerPage,
         nextPage,
         lastProduct,
-        beforeValue
+        beforeValue,
+        firstProduct
       )
     );
   };
