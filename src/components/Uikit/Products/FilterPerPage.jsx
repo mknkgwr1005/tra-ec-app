@@ -1,9 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useDispatch } from "react-redux";
-import { fetchProducts } from "../../../reducks/reducks/products/operations";
 
 const FilterPerPage = (props) => {
   const filterOfPerPage = [
