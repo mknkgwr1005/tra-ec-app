@@ -1,14 +1,12 @@
 import React from "react";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ProductCard } from "../components/Uikit/Products";
+import { FilterPerPage, ProductCard } from "../components/Uikit/Products";
 import { fetchProducts } from "../reducks/reducks/products/operations";
 import { getProducts } from "../reducks/reducks/products/selectors";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { db } from "../firebase";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -101,15 +99,7 @@ const ProductList = () => {
     );
   };
 
-  const filterOfPerPage = [
-    { label: "5件", value: 5 },
-    { label: "10件", value: 10 },
-    { label: "15件", value: 15 },
-    { label: "20件", value: 20 },
-  ];
-
   const changeProductsPerPage = (value) => {
-    console.log("done", value);
     setProductsPerPage(value);
     dispatch(
       fetchProducts(
@@ -126,18 +116,9 @@ const ProductList = () => {
 
   return (
     <section className="c-section-wrapin">
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={filterOfPerPage}
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="表示件数" />}
-        isOptionEqualToValue={(option, v) => option.id === v.id}
-        onChange={(event, filterOfPerPage) => {
-          changeProductsPerPage(filterOfPerPage.value);
-          // setProductsPerPage(filterOfPerPage.value);
-        }}
-      />
+      <FilterPerPage
+        changeProductsPerPage={changeProductsPerPage}
+      ></FilterPerPage>
       <div className="p-grid__row">
         {products.length > 0 &&
           products.map((product) => (
