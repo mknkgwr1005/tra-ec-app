@@ -1,7 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router";
 import {
-  Home,
   SignUp,
   SignIn,
   Reset,

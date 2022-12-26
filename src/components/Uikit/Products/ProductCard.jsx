@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import MenuIcon from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useState } from "react";
 import { deleteProduct } from "../../../reducks/reducks/products/operations";
@@ -71,7 +70,7 @@ const ProductCard = (props) => {
     <Card className={classes.root}>
       <CardMedia
         className={classes.media}
-        image={props.images[0].path}
+        image={images[0].path}
         title=""
         onClick={() => dispatch(push("/product/" + props.id))}
       />

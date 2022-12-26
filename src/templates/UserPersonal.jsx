@@ -5,7 +5,6 @@ import {
   addPersonalData,
   fetchPersonalData,
 } from "../reducks/reducks/users/operations";
-import { push } from "connected-react-router";
 import { getPersonalData } from "../reducks/reducks/users/selectors";
 import { useSelector } from "react-redux";
 

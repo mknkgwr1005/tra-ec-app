@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { saveProduct } from "../reducks/reducks/products/operations";
 import { TextInput, SelectBox, PrimaryButton } from "../components/Uikit";

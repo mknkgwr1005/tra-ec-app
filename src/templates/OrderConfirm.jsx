@@ -10,14 +10,13 @@ import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import { PrimaryButton, TextDetail } from "../components/Uikit";
 import { orderProduct } from "../reducks/reducks/products/operations";
-import Select, { SelectChangeEvent } from "@material-ui/core/Select";
+import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Box from "@material-ui/core/Box";
 import { PaymentList } from "../components/Uikit/Payment";
 import { fetchPersonalData } from "../reducks/reducks/users/operations";
-import { push } from "connected-react-router";
 
 const useStyles = makeStyles((theme) => ({
   detailBox: {

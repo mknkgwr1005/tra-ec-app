@@ -1,5 +1,4 @@
 import { db, FirebaseTimestamp } from "../../../firebase";
-import { getDocs } from "firebase/firestore";
 import { push } from "connected-react-router";
 import { fetchProductsAction, deleteProductsAction } from "./actions";
 
@@ -11,8 +10,7 @@ export const orderProduct = (productsInCart, price, paymentOptions) => {
     const usersRef = db.collection("users").doc(uid);
     const timestamp = FirebaseTimestamp.now();
 
-    let amount = 0,
-      products = {},
+    let products = {},
       soldOutProducts = [];
 
     const batch = db.batch();

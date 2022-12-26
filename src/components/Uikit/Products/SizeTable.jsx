@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/styles";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { getUsersFavourite } from "../../../reducks/reducks/users/selectors";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
   iconCell: {
