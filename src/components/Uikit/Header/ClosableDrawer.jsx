@@ -67,6 +67,21 @@ const ClosableDrawer = (props) => {
     },
   ]);
 
+  const [gender, setGender] = useState([
+    {
+      func: selectMenu,
+      label: "メンズ",
+      id: "male",
+      value: `/?gender=male`,
+    },
+    {
+      func: selectMenu,
+      label: "レディース",
+      id: "female",
+      value: `/?gender=female`,
+    },
+  ]);
+
   const menus = [
     {
       func: selectMenu,
@@ -178,6 +193,18 @@ const ClosableDrawer = (props) => {
               </ListItemIcon>
               <ListItemText primary={"ログアウト"} />
             </ListItem>
+          </List>
+          <Divider />
+          <List>
+            {gender.map((gender) => (
+              <ListItem
+                button
+                key={gender.id}
+                onClick={(e) => gender.func(e, gender.value)}
+              >
+                <ListItemText primary={gender.label} />
+              </ListItem>
+            ))}
           </List>
           <Divider />
           <List>
