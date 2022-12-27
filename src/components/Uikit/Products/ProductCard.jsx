@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
       margin: 16,
       width: "calc(33.3333%-32px)",
     },
+    width: "300px",
   },
   content: {
     display: "flex,",
