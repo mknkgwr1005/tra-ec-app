@@ -3,7 +3,6 @@ import IconButton from "@material-ui/core/IconButton";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { makeStyles } from "@material-ui/core/styles";
 import { storage } from "../../../firebase";
-import { useDispatch } from "react-redux";
 import ImagePreview from "./imagePreview";
 
 const useStyles = makeStyles({
@@ -15,8 +14,6 @@ const useStyles = makeStyles({
 
 const ImageArea = (props) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-
   const deleteImage = useCallback(
     (id) => {
       const ret = window.confirm("この画像を削除しますか？");

@@ -1,0 +1,32 @@
+[debug] [2022-12-19T03:58:36.744Z] ----------------------------------------------------------------------
+[debug] [2022-12-19T03:58:36.746Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\mknkg\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2022-12-19T03:58:36.746Z] CLI Version:   11.18.0
+[debug] [2022-12-19T03:58:36.746Z] Platform:      win32
+[debug] [2022-12-19T03:58:36.746Z] Node Version:  v18.12.1
+[debug] [2022-12-19T03:58:36.747Z] Time:          Mon Dec 19 2022 12:58:36 GMT+0900 (日本標準時)
+[debug] [2022-12-19T03:58:36.747Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-12-19T03:58:36.749Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-12-19T03:58:36.837Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-12-19T03:58:36.837Z] > authorizing via signed-in user (mikan941005@gmail.com)
+[debug] [2022-12-19T03:58:36.837Z] [iam] checking project tra-ec-app for permissions ["firebase.projects.get"]
+[debug] [2022-12-19T03:58:36.838Z] > refreshing access token with scopes: []
+[debug] [2022-12-19T03:58:36.839Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2022-12-19T03:58:36.839Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-12-19T03:58:36.991Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2022-12-19T03:58:36.991Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-12-19T03:58:36.997Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/tra-ec-app:testIamPermissions [none]
+[debug] [2022-12-19T03:58:36.997Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/tra-ec-app:testIamPermissions x-goog-quota-user=projects/tra-ec-app
+[debug] [2022-12-19T03:58:36.997Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/tra-ec-app:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-12-19T03:58:37.161Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2022-12-19T03:58:37.161Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2022-12-19T03:58:37.209Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/tra-ec-app:testIamPermissions 200
+[debug] [2022-12-19T03:58:37.209Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/tra-ec-app:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-12-19T03:58:37.213Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[warn] !  Your requested "node" version "16" doesn't match your global version "18". Using node@18 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Your requested \"node\" version \"16\" doesn't match your global version \"18\". Using node@18 from host."}}
+[debug] [2022-12-19T03:58:37.227Z] defaultcredentials: writing to file C:\Users\mknkg\AppData\Roaming\firebase\mikan941005_gmail_com_application_default_credentials.json
+[debug] [2022-12-19T03:58:37.229Z] DEBUG: Setting GAC to C:\Users\mknkg\AppData\Roaming\firebase\mikan941005_gmail_com_application_default_credentials.json
+[debug] [2022-12-19T03:58:37.229Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tra-ec-app/adminSdkConfig [none]
+[debug] [2022-12-19T03:58:37.571Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tra-ec-app/adminSdkConfig 200
+[debug] [2022-12-19T03:58:37.571Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tra-ec-app/adminSdkConfig {"projectId":"tra-ec-app","storageBucket":"tra-ec-app.appspot.com","locationId":"asia-northeast1"}
+[debug] [2022-12-19T03:58:37.577Z] [functions] Watching "C:\Users\mknkg\Documents\env\tra-ec-app\functions" for Cloud Functions...

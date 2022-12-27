@@ -3,7 +3,7 @@ import List from "@material-ui/core/List";
 import { useSelector, useDispatch } from "react-redux";
 import { getUsersFavourite } from "../reducks/reducks/users/selectors";
 import { FavouriteListItem } from "../components/Uikit/User";
-import { PrimaryButton, GreyButton } from "../components/Uikit";
+import { GreyButton } from "../components/Uikit";
 import { push } from "connected-react-router";
 import { makeStyles } from "@material-ui/core";
 

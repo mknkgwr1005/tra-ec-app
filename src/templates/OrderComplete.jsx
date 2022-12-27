@@ -1,7 +1,7 @@
 import { createStyles, makeStyles } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { PrimaryButton, GreyButton } from "../components/Uikit";
+import { PrimaryButton } from "../components/Uikit";
 import { push } from "connected-react-router";
 
 const useStyles = makeStyles(() =>

@@ -75,7 +75,6 @@ export const fetchPersonalData = () => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
     const list = [];
-
     db.collection("users")
       .doc(uid)
       .collection("personal")
@@ -85,23 +84,24 @@ export const fetchPersonalData = () => {
           const data = snapshot.data();
           list.push(data);
         });
-
         dispatch(fetchPersonalDataAction(list));
       });
   };
 };
 
-export const addPersonalData = (personalData) => {
+export const addPersonalData = (personalData, addedPersonalData) => {
   return async (dispatch, getState) => {
     const uid = getState().users.uid;
-    if (!fetchPersonalData) {
-      const docData = db
-        .collection("users")
-        .doc(uid)
-        .collection("personal")
-        .doc();
-      personalData["personalId"] = docData.id;
-      await docData.set(personalData);
+
+    const docData = db
+      .collection("users")
+      .doc(uid)
+      .collection("personal")
+      .doc();
+
+    if (personalData.length === 0) {
+      addedPersonalData["personalId"] = docData.id;
+      await docData.set(addedPersonalData);
       dispatch(push("/"));
     } else {
       const personalId = getState().users.personal[0].personalId;
@@ -111,7 +111,7 @@ export const addPersonalData = (personalData) => {
         .collection("personal")
         .doc(personalId);
 
-      personalRef.set(personalData, { merge: true });
+      personalRef.set(addedPersonalData, { merge: true });
       dispatch(push("/"));
     }
   };

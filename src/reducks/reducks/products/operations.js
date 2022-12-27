@@ -1,5 +1,4 @@
 import { db, FirebaseTimestamp } from "../../../firebase";
-import { getDocs } from "firebase/firestore";
 import { push } from "connected-react-router";
 import { fetchProductsAction, deleteProductsAction } from "./actions";
 
@@ -11,8 +10,7 @@ export const orderProduct = (productsInCart, price, paymentOptions) => {
     const usersRef = db.collection("users").doc(uid);
     const timestamp = FirebaseTimestamp.now();
 
-    let amount = 0,
-      products = {},
+    let products = {},
       soldOutProducts = [];
 
     const batch = db.batch();
@@ -111,24 +109,42 @@ export const fetchProducts = (
   gender,
   category,
   productsPerPage,
-  currentPage
+  currentPage,
+  lastProduct,
+  beforePageNum,
+  firstProduct
 ) => {
   return async (dispatch) => {
-    let query = productsRef.orderBy("updated_at", "desc");
-    const productListLength = (await query.get()).docs.length;
+    let query = productsRef.orderBy("order", "desc").limit(productsPerPage);
     query = gender !== "" ? query.where("gender", "==", gender) : query;
     query = category !== "" ? query.where("category", "==", category) : query;
-    query =
-      productsPerPage > 0 && productListLength > productsPerPage
-        ? query.limit(productsPerPage)
-        : query;
 
-    if (currentPage > 1 && productListLength !== 0) {
-      const lastSnapshot = (await query.get()).docs[productsPerPage - 1];
-      const next = query.startAfter(lastSnapshot).limit(productsPerPage);
+    // ページング機能
+    // 次ページへ行くとき、前の値が今のページ数より小さい場合は、前のページの最後のデータ以降のデータを表示する
+    if (currentPage > beforePageNum && lastProduct) {
+      const lastId = lastProduct.id;
+      const lastSnapshot = await (await query.where("id", "==", lastId).get())
+        .docs[0];
+      const next = productsRef
+        .orderBy("order", "desc")
+        .startAfter(lastSnapshot)
+        .limit(productsPerPage);
       query = next;
+      // 前ページへ戻るとき、前の値が今のページ数より大きい場合は、前のページの最後のデータ以前のデータを表示する
+    } else if (currentPage < beforePageNum) {
+      console.log("goBack");
+      console.log(firstProduct);
+      const lastId = firstProduct.id;
+      const lastSnapshot = await (await query.where("id", "==", lastId).get())
+        .docs[0];
+      const before = productsRef
+        .orderBy("order", "desc")
+        .endBefore(lastSnapshot)
+        .limit(productsPerPage);
+      query = before;
     }
 
+    // 表示する商品をかえる処理
     query.get().then((snapshots) => {
       const ProductList = [];
       snapshots.forEach((snapshot) => {
@@ -160,6 +176,7 @@ export const searchProducts = (searchKeyword) => {
 };
 
 export const saveProduct = (
+  order,
   id,
   name,
   description,
@@ -173,6 +190,7 @@ export const saveProduct = (
     const timeStamp = FirebaseTimestamp.now();
 
     const data = {
+      order: order,
       category: category,
       description: description,
       gender: gender,

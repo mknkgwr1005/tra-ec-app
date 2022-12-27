@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { TextInput, PrimaryButton } from "../components/Uikit";
-import { addPersonalData, signUp } from "../reducks/reducks/users/operations";
-import { push } from "connected-react-router";
+import {
+  addPersonalData,
+  fetchPersonalData,
+} from "../reducks/reducks/users/operations";
 import { getPersonalData } from "../reducks/reducks/users/selectors";
 import { useSelector } from "react-redux";
 
@@ -11,6 +13,10 @@ const UserPersonal = () => {
 
   const selector = useSelector((state) => state);
   const userPersonalData = getPersonalData(selector);
+
+  useEffect(() => {
+    dispatch(fetchPersonalData());
+  }, []);
 
   useEffect(() => {
     if (userPersonalData.length > 0) {
@@ -76,7 +82,7 @@ const UserPersonal = () => {
 
   const savePersonalData = useCallback(() => {
     dispatch(
-      addPersonalData({
+      addPersonalData(userPersonalData, {
         name: myname,
         address: address,
         telephone: telephone,
@@ -131,7 +137,16 @@ const UserPersonal = () => {
         />
         <div className="module-spacer--medium"></div>
         <div className="center">
-          <PrimaryButton label={"保存"} onClick={savePersonalData} />
+          <PrimaryButton
+            label={"保存"}
+            onClick={savePersonalData}
+            disabled={
+              myname === "" ||
+              address === "" ||
+              telephone === "" ||
+              zipcode === ""
+            }
+          />
         </div>
       </div>
     </div>
