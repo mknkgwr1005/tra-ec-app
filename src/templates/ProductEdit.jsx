@@ -38,8 +38,12 @@ const ProductEdit = () => {
       .collection("products")
       .orderBy("order", "desc")
       .get();
-    const newNum = lastOrder.docs[0].data().order;
-    setOrder(newNum + 1);
+    if (lastOrder.docs[0].data().order) {
+      const newNum = lastOrder.docs[0].data().order;
+      setOrder(newNum + 1);
+    } else {
+      return;
+    }
   };
 
   useEffect(() => {
